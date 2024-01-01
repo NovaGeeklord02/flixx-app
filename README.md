@@ -1,2 +1,2 @@
 # flixx-app
-vanilla JS movie guide ap
+vanilla JS movie guide app
