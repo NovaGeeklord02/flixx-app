@@ -7,7 +7,7 @@ const global = {
 async function DisplayPopMovies(){
     const data = await FetchfromDMTB('movie/popular')
     const dataArray = await data.results
-    console.log(dataArray);
+    // console.log(dataArray);
     
     dataArray.forEach((movie) => {
         const div = document.createElement('div');
@@ -38,6 +38,33 @@ async function DisplayPopMovies(){
     })
 }
 
+async function DisplayPopTV(){
+    const data = await FetchfromDMTB('tv/popular');
+    const dataArray = await data.results
+    // console.log(dataArray);
+    
+    dataArray.forEach((show) => {
+        const div = document.createElement('div');
+        div.classList.add('card');
+        div.innerHTML = `<div class="card">
+        <a href="tv-details.html?id=${show.id}">
+          <img
+            src="https://image.tmdb.org/t/p/w500${show.poster_path}"
+            class="card-img-top"
+            alt="${show.name}"
+          />
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">${show.name}</h5>
+          <p class="card-text">
+            <small class="text-muted">Aired: ${show.first_air_date}</small>
+          </p>
+        </div>
+      </div>
+        `
+        document.querySelector('#popular-shows').appendChild(div)
+    })
+}
 
 async function FetchfromDMTB(endpoint){
     API_KEY = '26dfc1054fa8edb91389180f69e91e58'
@@ -70,7 +97,7 @@ function init(){
             DisplayPopMovies();
             break;
         case '/shows.html':
-            console.log('TV Show');
+            DisplayPopTV();
             break;
         case '/tv-details.html':
             console.log('TV Details');
