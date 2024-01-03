@@ -9,6 +9,7 @@ const global = {
     type : '',
     page : 1,
     totalPage : 1,
+    totalResults : 0,
   }
 }
 
