@@ -247,7 +247,9 @@ async function search(){
   global.search.type = urlparams.get('type')
   global.search.term = urlparams.get('search-term')
   // console.log(global.search.term);
-  fetchSearchData();
+  const data = await fetchSearchData();
+  const dataArray = await data.results;
+  console.log(data);
 }
 
 
@@ -275,7 +277,7 @@ async function fetchSearchData() {
 
     const response = await fetch(`${API_URL}search/${global.search.type}?api_key=${API_KEY}&query=${global.search.term}`);
     const data = await response.json();
-    console.log(data);
+    return data;
   
 }
 
