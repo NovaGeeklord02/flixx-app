@@ -1,8 +1,19 @@
+// API reference link
+// https://developer.themoviedb.org/reference/search-movie
+
+
 const global = {
   currentPage: window.location.pathname,
+  search : {
+    term : '',
+    type : '',
+    page : 1,
+    totalPage : 1,
+  }
 }
 
 // console.log(global.currentPage);
+
 
 async function DisplayPopMovies() {
   const data = await FetchfromDMTB('movie/popular')
@@ -38,6 +49,10 @@ async function DisplayPopMovies() {
   })
 }
 
+
+
+
+
 async function DisplayPopTV() {
   const data = await FetchfromDMTB('tv/popular');
   const dataArray = await data.results
@@ -65,6 +80,9 @@ async function DisplayPopTV() {
     document.querySelector('#popular-shows').appendChild(div)
   })
 }
+
+
+
 
 async function DisplayMovieDetails() {
   const movieID = await document.location.search.split('=')[1];
@@ -167,6 +185,9 @@ async function DisplayTVShowDetails() {
   document.querySelector('#show-details').appendChild(div);
 }
 
+
+
+
 async function DisplaySlider(){
   const data = await FetchfromDMTB('movie/now_playing')
   const dataArray = data.results
@@ -186,6 +207,10 @@ async function DisplaySlider(){
   })
   initSwiper();
 }
+
+
+
+
 
 function initSwiper() {
   const swiper = new Swiper('.swiper', {
@@ -213,6 +238,22 @@ function initSwiper() {
 
 
 
+
+
+async function search(){
+  const querystring = document.location.search;
+  const urlparams = new URLSearchParams(querystring);
+
+  global.search.type = urlparams.get('type')
+  global.search.term = urlparams.get('search-term')
+  // console.log(global.search.term);
+  fetchSearchData();
+}
+
+
+
+
+
 async function FetchfromDMTB(endpoint) {
   API_KEY = '26dfc1054fa8edb91389180f69e91e58'
   API_URL = 'https://api.themoviedb.org/3/'
@@ -224,6 +265,25 @@ async function FetchfromDMTB(endpoint) {
 };
 
 
+
+
+
+async function fetchSearchData() {
+  const API_KEY = '26dfc1054fa8edb91389180f69e91e58';
+  const API_URL = 'https://api.themoviedb.org/3/';
+  const queryParams = 'include_adult=false&language=en-US&page=1';
+
+    const response = await fetch(`${API_URL}search/${global.search.type}?api_key=${API_KEY}&query=${global.search.term}`);
+    const data = await response.json();
+    console.log(data);
+  
+}
+
+
+
+
+
+
 // Highlight page
 function highlight() {
   const links = document.querySelectorAll('.nav-link')
@@ -233,6 +293,8 @@ function highlight() {
     }
   })
 }
+
+
 
 
 function init() {
@@ -255,7 +317,7 @@ function init() {
       DisplayMovieDetails();
       break;
     case '/search.html':
-      console.log('Search Details');
+      search();
       break;
   }
   highlight();
